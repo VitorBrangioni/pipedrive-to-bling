@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const bodyParser = require('body-parser');
-const pipedrive = require('./pipedrive').router;
+const pipedrive = require('./pipedrive-res').router;
 const webhooks = require('./webhooks').router;
 const router = Router();
 

@@ -1,4 +1,4 @@
 const mongoose = require('mongoose');
 const schema = require('./schema');
 
-module.exports = mongoose.model('Pipedrive', schema);
+module.exports = mongoose.model('PipedriveRes', schema);
