@@ -3,7 +3,7 @@ const { readdirSync, statSync } = require("fs");
 const { join } = require("path");
 const models = {};
 
-mongoose.connect("mongodb://localhost/my_database", {
+mongoose.connect("mongodb://pipedrivetobling-mongodb/pipedrivetobling", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { PipedriveRes } = require('../../config/models');
-const PipedriveRes = mongoose.model("PipedriveRes");
+// const PipedriveRes = mongoose.model("PipedriveRes");
 
 exports.findOne = () => {
     // Pipedrive.find({}, function (err, docs) {

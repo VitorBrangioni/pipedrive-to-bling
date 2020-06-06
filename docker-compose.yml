@@ -24,6 +24,7 @@ services:
       - "27017:27017"
     networks:
       - pipedrivetobling-network
+    container_name: pipedrivetobling-mongodb
 
 networks:
   pipedrivetobling-network:
