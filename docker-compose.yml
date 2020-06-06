@@ -1,0 +1,30 @@
+version: '2'
+
+services:
+  api:
+    build: src/.
+    ports:
+      - "3000:3000"   #web service port
+      - "5859:5859"   #debug port
+    volumes:
+      - ./:/pipedrivetobling
+    networks:
+        - pipedrivetobling-network
+    working_dir: /pipedrivetobling
+    command: sh -c "npm install && cd src && nodemon server.js --ignore __tests__"
+    depends_on:
+      - mongodb
+    container_name: api
+
+  mongodb:
+    build: database/mongodb/.
+    volumes:
+      - /var/www/html:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - pipedrivetobling-network
+
+networks:
+  pipedrivetobling-network:
+    driver: bridge
