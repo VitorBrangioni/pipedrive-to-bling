@@ -1,4 +1,5 @@
 const express = require('express');
+require('./config/models');
 const { router } = require('./api');
 const cors = require('cors');
 
@@ -10,6 +11,7 @@ class App {
 
     constructor() {
         this.express = express();
+
 
         this.middlewares();
         this.routes();
