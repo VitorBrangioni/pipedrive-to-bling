@@ -14,12 +14,12 @@ services:
     command: sh -c "npm install && cd src && nodemon server.js --ignore __tests__"
     depends_on:
       - mongodb
-    container_name: api
+    container_name: pipedrivetobling-api
 
   mongodb:
     build: database/mongodb/.
     volumes:
-      - /var/www/html:/data/db
+      - /home/.mongodb:/data/db
     ports:
       - "27017:27017"
     networks:
