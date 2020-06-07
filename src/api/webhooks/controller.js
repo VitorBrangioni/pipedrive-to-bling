@@ -1,11 +1,18 @@
-const { PipedriveRes } = require('../../config/models');
+const mongoose = require('mongoose');
+// const PipedriveRes = mongoose.model('PipedriveRes');
+const { PipedriveResponse } = require('../../config/models');
 
 exports.updated = (req, res) => {
-    PipedriveRes.create(res.body)
-        .then(mgRes => {
-            console.log(mgRes);
+    PipedriveResponse.create(req.body, function (err, created) {
+        res.status(201).json(created);
+      });
+};
 
-            res.sendStatus(201);
-        })
-    console.log(req.body);
+exports.test = (req, res) => {
+    PipedriveResponse.find({}, function (err, docs) {
+        if (err) {
+            res.sendStatus(500);
+            console.log(err);
+        } else res.status(200).json(docs);
+    });
 };

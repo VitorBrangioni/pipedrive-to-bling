@@ -21,7 +21,7 @@ services:
     volumes:
       - /home/.mongodb:/data/db
     ports:
-      - "27017:27017"
+      - "27022:27017"
     networks:
       - pipedrivetobling-network
     container_name: pipedrivetobling-mongodb
