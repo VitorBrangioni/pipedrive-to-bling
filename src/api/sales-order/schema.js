@@ -8,11 +8,12 @@ module.exports = new Schema({
   paymentInstallments: Object,
   customer: Object,
   itens: Object,
+  pipedriveDealId: String,
   pipedriveResponseId: {
     type: Schema.Types.ObjectId,
     ref: "PipedriveResponse",
   },
-   blingResponseId: {
+  blingResponseId: {
     type: Schema.Types.ObjectId,
     ref: "BlingResponse",
   },

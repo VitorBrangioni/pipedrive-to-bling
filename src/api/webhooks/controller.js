@@ -1,7 +1,7 @@
 const convert = require("xml-js");
 const responseTest = require("./test-response");
 const { PipedriveResponse, SalesOrder } = require("../../config/models");
-const OrderSalesModel = require("../../helpers/bling/OrderSalesModel");
+const BlingHelper = require("../../helpers/BlingHelper");
 const blingApi = require("../../services/bling");
 const pipedriveApi = require("../../services/pipedrive");
 
@@ -13,24 +13,7 @@ exports.updated = async (req, res) => {
     res.sendStatus(200);
     return;
   }
-  const blingModel = OrderSalesModel.getJson(current);
-  const jsonProductsToXml =  { item: [] };
-
-  if (current.products_count) {
-    const products = await pipedriveApi.listDealProducts(current.id);
-
-    products.forEach((product) => {
-      jsonProductsToXml.item.push({
-        codigo: product.id,
-        descricao: product.name,
-        qtde: product.quantity,
-        vlr_unit: product.item_price,
-        un: 'Un'
-      });
-    });
-  }
-  blingModel.pedido.itens = jsonProductsToXml;
-  const xmlSalesOrderToBling = convert.json2xml(blingModel, { compact: true, spaces: 4 });
+  const xmlSalesOrderToBling = BlingHelper.getJsonFromOrderSales(current);
   const orderCreated = await blingApi.registerSalesOrder(xmlSalesOrderToBling);
   const { pedido } = blingModel;
 
@@ -41,6 +24,7 @@ exports.updated = async (req, res) => {
     paymentInstallments: pedido.parcelas,
     customer: pedido.cliente,
     itens: pedido.itens,
+    pipedriveDealId: current.id,
     pipedriveResponseId: pipedriveResCreated._id,
     blingResponseId: orderCreated._id
   }).then((salesOrderCreated) => {
