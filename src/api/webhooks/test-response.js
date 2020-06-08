@@ -61,8 +61,8 @@ module.exports = {
       last_outgoing_mail_time: null,
       label: null,
       stage_order_nr: 3,
-      person_name: "Bill Gates gogogogo", 
-      org_name: "Microsoft gogogogo",// cliente.nome
+      person_name: "Bill Gates kokoogogo", 
+      org_name: "Microsoft gogokokogogo",// cliente.nome
       next_activity_subject: null,
       next_activity_type: null,
       next_activity_duration: null,

@@ -1,17 +1,14 @@
-const mongoose = require("mongoose");
 const convert = require("xml-js");
 const responseTest = require("./test-response");
-// const PipedriveRes = mongoose.model('PipedriveRes');
-const { PipedriveResponse, SalesOrder, BlingResponse } = require("../../config/models");
+const { PipedriveResponse, SalesOrder } = require("../../config/models");
 const OrderSalesModel = require("../../helpers/bling/OrderSalesModel");
 const blingApi = require("../../services/bling");
 const pipedriveApi = require("../../services/pipedrive");
 
 exports.updated = async (req, res) => {
-  const pipedriveWebhooksResponse = req.body;
-  const { current, previous } = responseTest;
+  const pipedriveResCreated = await PipedriveResponse.create(req.body);
+  const { current, previous } = req.body;
 
-  // 1. Verificar se foi alterado para won
   if (!(previous.status !== 'won' && current.status === 'won')) {
     res.sendStatus(200);
     return;
@@ -19,7 +16,6 @@ exports.updated = async (req, res) => {
   const blingModel = OrderSalesModel.getJson(current);
   const jsonProductsToXml =  { item: [] };
 
-  // 2. Verificar se tem produtos. Se tiver, entao buscar todos
   if (current.products_count) {
     const products = await pipedriveApi.listDealProducts(current.id);
 
@@ -33,19 +29,10 @@ exports.updated = async (req, res) => {
       });
     });
   }
-
-  // 3. Mapeamento e transformacao em Xml
   blingModel.pedido.itens = jsonProductsToXml;
-  const xmlSalesOrder = convert.json2xml(blingModel, { compact: true, spaces: 4 });
-
-  // 4. Salvar pedido no bling
-  const orderCreated = await blingApi.registerSalesOrder(xmlSalesOrder);
-  const blingResCreated = await BlingResponse.create(orderCreated);
-
-  // 5. Salvar pedido no mongo
+  const xmlSalesOrderToBling = convert.json2xml(blingModel, { compact: true, spaces: 4 });
+  const orderCreated = await blingApi.registerSalesOrder(xmlSalesOrderToBling);
   const { pedido } = blingModel;
-
-  const pipedriveResCreated = await PipedriveResponse.create({ batata: 'batatinha', oi: 'oi' });
 
   SalesOrder.create({
     internalObservation: pedido.obs_internas,
@@ -55,10 +42,9 @@ exports.updated = async (req, res) => {
     customer: pedido.cliente,
     itens: pedido.itens,
     pipedriveResponseId: pipedriveResCreated._id,
-    blingResponseId: blingResCreated._id
-  }).then((created) => {
-    console.log(created);
-    res.status(201).json(blingModel);
+    blingResponseId: orderCreated._id
+  }).then((salesOrderCreated) => {
+    res.status(201).json(salesOrderCreated);
   });
 };
 
