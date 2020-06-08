@@ -1,11 +1,14 @@
 const mongoose = require("mongoose");
-const { PipedriveRes } = require('../../config/models');
+const { PipedriveResponse } = require("../../config/models");
 // const PipedriveRes = mongoose.model("PipedriveRes");
 
-exports.findOne = () => {
-    // Pipedrive.find({}, function (err, docs) {
-    // docs.forEach
-    // console.log("DOCS")
-    // console.log(docs);
-//   });
+exports.findAll = (req, res) => {
+  PipedriveResponse.find({})
+    .then((docs) => {
+      res.status(200).json(docs);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 };
