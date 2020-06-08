@@ -31,10 +31,3 @@ exports.updated = async (req, res) => {
     res.status(201).json(salesOrderCreated);
   });
 };
-
-exports.test = (req, res) => {
-  PipedriveResponse.find({}).then((docs) => {
-    console.log(docs);
-    res.status(200).json(docs);
-  });
-};
