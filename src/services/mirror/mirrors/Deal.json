@@ -1,0 +1,8 @@
+{
+    "id": "pedido.numero",
+    "title": "pedido.obs_internas",
+    "value": "pedido.parcelas.parcela.vlr",
+    "won_time": "pedido.data",
+    "org_name": "pedido.cliente.nome",
+    "owner_name": "pedido.vendedor"
+}
