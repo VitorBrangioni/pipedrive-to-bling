@@ -1,9 +1,6 @@
-const convert = require("xml-js");
-const responseTest = require("./test-response");
 const { PipedriveResponse, SalesOrder } = require("../../config/models");
 const BlingHelper = require("../../helpers/BlingHelper");
 const blingApi = require("../../services/bling");
-const pipedriveApi = require("../../services/pipedrive");
 
 exports.updated = async (req, res) => {
   const pipedriveResCreated = await PipedriveResponse.create(req.body);
