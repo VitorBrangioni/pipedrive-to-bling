@@ -28,7 +28,6 @@ exports.mergePipedriveWithBling = async (req, res) => {
 
     if (!dealRegistered.retorno.erros) {
       const pedido = dealRegistered.retorno.pedidos[0];
-      console.log(pedido)
 
       SalesOrder.create({
         internalObservation: pedido.obs_internas,

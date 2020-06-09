@@ -9,7 +9,6 @@ class Mirror {
 
         if (attrs.length) {
           let curentObj = {};
-          console.log(attrs);
           attrs.forEach((attr, i) => {
             if (curentObj.hasOwnProperty(attr)) {
                 curentObj = object[key];

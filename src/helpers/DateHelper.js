@@ -6,7 +6,6 @@ class DateHelper {
   }
 
   static formatDatetime(datetime) {
-    console.log(datetime)
     return (
         Moment(datetime)
         .format("DD/MM/YYYY HH:mm")
