@@ -27,12 +27,13 @@ class BlingHelper {
     };
   }
 
-  static async getXmlFromPipedriveDeal(pipedriveDeal) {
+  static async getDataFromPipedriveDeal(pipedriveDeal) {
     const dealFormatted = BlingHelper.getJsonFromOrderSales(pipedriveDeal);
     const jsonProductsToXml = { item: [] };
+    let products = []
 
     if (pipedriveDeal.products_count) {
-      const products = await pipedriveApi.listDealProducts(pipedriveDeal.id);
+      products = await pipedriveApi.listDealProducts(pipedriveDeal.id);
 
       products.forEach((product) => {
         jsonProductsToXml.item.push({
@@ -47,7 +48,7 @@ class BlingHelper {
     dealFormatted.pedido.itens = jsonProductsToXml;
     const xml = convert.json2xml(dealFormatted, { compact: true, spaces: 4 });
 
-    return xml;
+    return { xml, products };
   }
 }
 

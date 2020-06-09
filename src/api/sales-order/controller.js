@@ -21,21 +21,22 @@ exports.mergePipedriveWithBling = async (req, res) => {
 
     if (saleOrder) break;
 
-    const xml = await BlingHelper.getXmlFromPipedriveDeal(deal);
+    const { xml, products } = await BlingHelper.getDataFromPipedriveDeal(deal);
     const dealRegistered = await blingApi.registerSalesOrder(xml);
 
     responses.push(dealRegistered);
 
     if (!dealRegistered.retorno.erros) {
       const pedido = dealRegistered.retorno.pedidos[0];
+      console.log(pedido)
 
       SalesOrder.create({
         internalObservation: pedido.obs_internas,
-        date: pedido.data,
+        date: deal.won_time,
         saler: pedido.vendedor,
-        paymentInstallments: pedido.parcelas,
+        paymentValue: deal.value,
         customer: pedido.cliente,
-        itens: pedido.itens,
+        itens: products,
         pipedriveDealId: deal.id,
         blingResponseId: dealRegistered._id
       });

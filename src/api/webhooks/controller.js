@@ -11,7 +11,7 @@ exports.updated = async (req, res) => {
     res.sendStatus(200);
     return;
   }
-  const xml = await BlingHelper.getXmlFromPipedriveDeal(current);
+  const { xml, products } = await BlingHelper.getDataFromPipedriveDeal(current);
   const orderCreated = await blingApi.registerSalesOrder(xml);
 
   if (orderCreated.retorno.erros) {
@@ -24,11 +24,11 @@ exports.updated = async (req, res) => {
 
   SalesOrder.create({
     internalObservation: pedido.obs_internas,
-    date: pedido.data,
+    date: current.won_time,
     saler: pedido.vendedor,
-    paymentInstallments: pedido.parcelas,
+    paymentValue: current.value,
     customer: pedido.cliente,
-    itens: pedido.itens,
+    itens: products,
     pipedriveDealId: current.id,
     pipedriveResponseId: pipedriveResCreated._id,
     blingResponseId: orderCreated._id,

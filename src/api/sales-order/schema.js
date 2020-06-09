@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 
 module.exports = new Schema({
   internalObservation: String,
-  date: String,
+  date: Date,
   saler: String,
-  paymentInstallments: Object,
+  paymentValue: Number,
   customer: Object,
-  itens: Object,
+  itens: Array,
   pipedriveDealId: String,
   pipedriveResponseId: {
     type: Schema.Types.ObjectId,
