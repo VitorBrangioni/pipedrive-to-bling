@@ -1,4 +1,3 @@
-const convert = require("xml-js");
 const { SalesOrder } = require("../../config/models");
 const pipedriveApi = require("../../services/pipedrive");
 const blingApi = require("../../services/bling");
@@ -52,4 +51,15 @@ exports.mergePipedriveWithBling = async (req, res) => {
     sts,
     responses
   });
+};
+
+exports.findAll = (req, res) => {
+  SalesOrder.find({})
+    .then((docs) => {
+      res.status(200).json(docs);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 };

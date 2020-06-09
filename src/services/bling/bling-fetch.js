@@ -18,7 +18,5 @@ exports.post = async (endpoint, xml) => {
   const { _id } = await BlingResponse.create(responseJson);
   responseJson._id = _id;
 
-  console.log("_id  = ", responseJson)
-
   return responseJson;
 }
