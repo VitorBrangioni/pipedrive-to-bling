@@ -44,7 +44,7 @@ module.exports = {
       visible_to: "3",
       close_time: "2020-06-07 17:45:52",
       pipeline_id: 1,
-      won_time: "03/06/2020", // pedido.data // todo: formatar essa data
+      won_time: "2020-06-07 09:00:00", // pedido.data // todo: formatar essa data
       first_won_time: "2020-06-07 17:45:08",
       lost_time: null,
       products_count: 6,
