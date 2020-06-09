@@ -5,15 +5,19 @@ const blingApi = require("../../services/bling");
 const BlingHelper = require("../../helpers/BlingHelper");
 
 exports.mergePipedriveWithBling = async (req, res) => {
+  const { dealStatus } = req.body;
 
-  // TODO: Salvar no mongo os que criarem
-  const { dealStatus } = req.params;
-
-  const wonDeals = await pipedriveApi.getAllDealsByStatus('won');
+  const deals = await pipedriveApi.getAllDealsByStatus(dealStatus);
   const dealsRegistered = [];
+  const sts = {
+    nRegistered: 0,
+    nDeals: deals.length
+  };
+  const responses = [];
+  let respostaTest = {};
 
-  for (let i = 0; i < wonDeals.length; i++) {
-    const deal = wonDeals[i];
+  for (let i = 0; i < deals.length; i++) {
+    const deal = deals[i];
     const saleOrder = await SalesOrder.findOne({ pipedriveDealId: deal.id });
 
     if (saleOrder) break;
@@ -21,8 +25,31 @@ exports.mergePipedriveWithBling = async (req, res) => {
     const xml = await BlingHelper.getXmlFromPipedriveDeal(deal);
     const dealRegistered = await blingApi.registerSalesOrder(xml);
 
+    responses.push(dealRegistered);
+
+    if (!dealRegistered.retorno.erros) {
+      const pedido = dealRegistered.retorno.pedidos[0];
+
+      SalesOrder.create({
+        internalObservation: pedido.obs_internas,
+        date: pedido.data,
+        saler: pedido.vendedor,
+        paymentInstallments: pedido.parcelas,
+        customer: pedido.cliente,
+        itens: pedido.itens,
+        pipedriveDealId: deal.id,
+        blingResponseId: dealRegistered._id
+      });
+
+      respostaTest = dealRegistered;
+      const { nRegistered } = sts;
+      sts.nRegistered = nRegistered + 1;
+    } 
     dealsRegistered.push(dealRegistered);
   }
 
-  res.status(201).send(xmls[0]);
+  res.status(201).send({
+    sts,
+    responses
+  });
 };

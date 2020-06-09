@@ -6,7 +6,7 @@ router.get('/', (req, res) => {
     controller.findAll(req, res);
 });
 
-router.get('/merge/:dealStatus', (req, res) => {
+router.post('/merge', (req, res) => {
     controller.mergePipedriveWithBling(req, res);
 });
 
