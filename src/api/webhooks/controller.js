@@ -12,7 +12,7 @@ exports.updated = async (req, res) => {
   }
   const xmlSalesOrderToBling = await BlingHelper.getJsonFromOrderSales(current);
   const orderCreated = await blingApi.registerSalesOrder(xmlSalesOrderToBling);
-  const pedido = dealRegistered.retorno.pedidos[0];;
+  const pedido = orderCreated.retorno.pedidos[0];;
 
   SalesOrder.create({
     internalObservation: pedido.obs_internas,
