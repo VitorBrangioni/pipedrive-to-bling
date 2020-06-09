@@ -7,8 +7,12 @@ const defaultParams = new URLSearchParams();
 defaultParams.append("api_token", apiToken);
 
 exports.get = (endpoint, params = []) => {
-  params.forEach(param => defaultParams.append(param.key, param.value));
+  let paramsString = '';
 
-  return fetch(`${hostApi}/${endpoint}?api_token=${apiToken}`)
+  params.forEach(({ key, value }) => {
+    paramsString += `${key}=${value}`;
+  });
+
+  return fetch(`${hostApi}/${endpoint}?api_token=${apiToken}&${paramsString}`)
     .then(response => response.json());
 }
