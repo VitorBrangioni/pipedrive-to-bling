@@ -5,8 +5,7 @@ const testRes = require('./test-response')
 
 exports.updated = async (req, res) => {
   const pipedriveResCreated = await PipedriveResponse.create(req.body);
-  // const { current, previous } = req.body;
-  const { current, previous } = testRes;
+  const { current, previous } = req.body;
 
   if (!(previous.status !== "won" && current.status === "won")) {
     res.sendStatus(200);
@@ -21,7 +20,6 @@ exports.updated = async (req, res) => {
     });
     return;
   }
-  // const pedido = orderCreated.pedido;
   const pedido = orderCreated.retorno.pedidos[0];
 
   SalesOrder.create({
